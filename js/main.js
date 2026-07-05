@@ -1,15 +1,55 @@
-const anio_actual = 2026;
+let saldo = 1000;
+let opcion = "";
 
-let nombre = prompt("Ingrese su nombre:");
-let apellido = prompt("Ingrese su apellido:");
-let anio_nac = prompt("Ingrese su año de nacimiento:");
+alert("Bienvenido al Cajero Automático");
 
-let anio_parseado = parseInt(anio_nac);
+while (opcion !== "4") {
 
-if (!isNaN(anio_parseado)) {
-    let edad = anio_actual - anio_parseado;
-    let mensaje = `Hola ${nombre} ${apellido}, tu edad es ${edad} años.`;
-    alert(mensaje);
-} else {
-    alert("Por favor, ingrese un año válido.");
+    opcion = prompt(
+        "Seleccione una opción:\n" +
+        "1 - Consultar saldo\n" +
+        "2 - Depositar dinero\n" +
+        "3 - Retirar dinero\n" +
+        "4 - Salir"
+    );
+
+    if (opcion === "1") {
+
+        alert("Su saldo es: $" + saldo);
+
+    } else if (opcion === "2") {
+
+        let deposito = Number(prompt("¿Cuánto dinero desea depositar?"));
+
+        saldo = saldo + deposito;
+
+        alert("Depósito realizado.\nSaldo actual: $" + saldo);
+
+    } else if (opcion === "3") {
+
+        let retiro = Number(prompt("¿Cuánto dinero desea retirar?"));
+
+        if (retiro <= saldo) {
+
+            saldo = saldo - retiro;
+            alert("Retiro realizado.\nSaldo actual: $" + saldo);
+
+        } else {
+
+            alert("No tiene saldo suficiente.");
+
+        }
+
+    } else if (opcion === "4") {
+
+        alert("Gracias por utilizar el cajero.");
+
+    } else {
+
+        alert("Opción inválida.");
+
+    }
+
 }
+
+console.log("Fin del programa");
