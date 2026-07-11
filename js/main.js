@@ -1,5 +1,6 @@
 let saldo = 1000;
 let opcion = "";
+
 let movimientos = [
     "Saldo inicial",
     "Inicio de sesión",
@@ -8,12 +9,67 @@ let movimientos = [
     "Retiro"
 ];
 
+// Función declarada
+function mostrarSaldo(saldoActual) {
+    alert("Su saldo es: $" + saldoActual);
+}
+
+// Función con return
+function actualizarSaldo(saldoActual, monto, operacion) {
+
+    if (operacion === "deposito") {
+        return saldoActual + monto;
+    } else {
+        return saldoActual - monto;
+    }
+
+}
+
+// Función flecha
+const agregarMovimiento = (movimiento) => {
+    movimientos.push(movimiento);
+};
+
+// Función para mostrar el historial
+function mostrarHistorial() {
+
+    let buscar = prompt(
+        "Ingrese un movimiento para buscar.\nEjemplo: Consulta de saldo"
+    );
+
+    if (movimientos.includes(buscar)) {
+
+        let posicion = movimientos.indexOf(buscar);
+
+        alert("El movimiento existe y está en la posición " + posicion);
+
+        movimientos.splice(posicion, 1, buscar + " (revisado)");
+
+    } else {
+
+        alert("Ese movimiento no existe.");
+
+    }
+
+    let eliminado = movimientos.pop();
+    alert("Se eliminó el último movimiento: " + eliminado);
+
+    movimientos.unshift("Historial actualizado");
+
+    console.log("Historial de movimientos");
+
+    for (let movimiento of movimientos) {
+        console.log(movimiento);
+    }
+
+}
+
 alert("Bienvenido al Cajero Automático");
 
 while (opcion !== "5") {
 
     opcion = prompt(
-        "Seleccione una opción:\n" +
+        "Seleccione una opción:\n\n" +
         "1 - Consultar saldo\n" +
         "2 - Depositar dinero\n" +
         "3 - Retirar dinero\n" +
@@ -23,65 +79,40 @@ while (opcion !== "5") {
 
     if (opcion === "1") {
 
-        alert("Su saldo es: $" + saldo);
-        movimientos.push("Consulta de saldo");
+        mostrarSaldo(saldo);
+        agregarMovimiento("Consulta de saldo");
 
     } else if (opcion === "2") {
 
-        let deposito = Number(prompt("¿Cuánto dinero desea depositar?"));
+        let deposito = Number(prompt("Ingrese el monto a depositar"));
 
-        saldo += deposito;
-        movimientos.push("Depósito de $" + deposito);
+        saldo = actualizarSaldo(saldo, deposito, "deposito");
 
-        alert("Depósito realizado.\nSaldo actual: $" + saldo);
+        agregarMovimiento("Depósito de $" + deposito);
+
+        alert("Depósito realizado.");
 
     } else if (opcion === "3") {
 
-        let retiro = Number(prompt("¿Cuánto dinero desea retirar?"));
+        let retiro = Number(prompt("Ingrese el monto a retirar"));
 
         if (retiro <= saldo) {
 
-            saldo -= retiro;
-            movimientos.push("Retiro de $" + retiro);
+            saldo = actualizarSaldo(saldo, retiro, "retiro");
 
-            alert("Retiro realizado.\nSaldo actual: $" + saldo);
+            agregarMovimiento("Retiro de $" + retiro);
+
+            alert("Retiro realizado.");
 
         } else {
 
-            alert("No tiene saldo suficiente.");
+            alert("Saldo insuficiente.");
 
         }
 
     } else if (opcion === "4") {
 
-        let buscar = prompt(
-            "Ingrese un movimiento para buscar.\nEjemplo: Consulta de saldo"
-        );
-
-        if (movimientos.includes(buscar)) {
-
-            let posicion = movimientos.indexOf(buscar);
-
-            alert("El movimiento existe y está en la posición " + posicion);
-
-            movimientos.splice(posicion, 1, buscar + " (revisado)");
-
-        } else {
-
-            alert("Ese movimiento no existe.");
-
-        }
-
-        let eliminado = movimientos.pop();
-        alert("Se ha eliminado el último movimiento: " + eliminado);
-
-        movimientos.unshift("Historial actualizado");
-
-        console.log("Historial de movimientos:");
-
-        for (let movimiento of movimientos) {
-            console.log("Movimiento: " + movimiento);
-        }
+        mostrarHistorial();
 
     } else if (opcion === "5") {
 
