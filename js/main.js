@@ -9,12 +9,10 @@ let movimientos = [
     "Retiro"
 ];
 
-// Función declarada
 function mostrarSaldo(saldoActual) {
     alert("Su saldo es: $" + saldoActual);
 }
 
-// Función con return
 function actualizarSaldo(saldoActual, monto, operacion) {
 
     if (operacion === "deposito") {
@@ -25,12 +23,10 @@ function actualizarSaldo(saldoActual, monto, operacion) {
 
 }
 
-// Función flecha
 const agregarMovimiento = (movimiento) => {
     movimientos.push(movimiento);
 };
 
-// Función para mostrar el historial
 function mostrarHistorial() {
 
     let buscar = prompt(
