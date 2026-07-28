@@ -1,3 +1,4 @@
+// Clase que representa una cuenta bancaria
 class CuentaBancaria {
 
     constructor(titular, numeroCuenta, saldo, movimientos) {
@@ -7,10 +8,12 @@ class CuentaBancaria {
         this.movimientos = movimientos;
     }
 
+    // Método para realizar un depósito
     depositar(monto) {
         this.saldo += monto;
     }
 
+    // Método para realizar un retiro si hay saldo suficiente
     retirar(monto) {
         if (monto <= this.saldo) {
             this.saldo -= monto;
@@ -21,6 +24,7 @@ class CuentaBancaria {
 
 }
 
+// Creación de las cuentas bancarias
 const cuenta1 = new CuentaBancaria(
     "Juan",
     1001,
@@ -42,16 +46,23 @@ const cuenta3 = new CuentaBancaria(
     ["Saldo inicial"]
 );
 
+// Array que almacena todas las cuentas del banco
+const cuentas = [cuenta1, cuenta2, cuenta3];
+
+// Variable para controlar el menú principal
 let opcion = "";
 
+// Muestra el saldo de una cuenta
 function mostrarSaldo(cuenta) {
     alert("Su saldo es: $" + cuenta.saldo);
 }
 
+// Agrega un movimiento al historial de una cuenta
 const agregarMovimiento = (cuenta, movimiento) => {
     cuenta.movimientos.push(movimiento);
 };
 
+// Permite consultar y modificar el historial de movimientos
 function mostrarHistorial(cuenta) {
 
     let buscar = prompt(
@@ -78,7 +89,7 @@ function mostrarHistorial(cuenta) {
 
     cuenta.movimientos.unshift("Historial actualizado");
 
-    console.log("Historial de movimientos");
+    console.log("Historial de movimientos:");
 
     for (let movimiento of cuenta.movimientos) {
         console.log(movimiento);
@@ -86,9 +97,39 @@ function mostrarHistorial(cuenta) {
 
 }
 
+// Utiliza funciones de orden superior sobre el array de cuentas
+function mostrarInformacionBanco() {
+
+    let numero = Number(prompt("Ingrese el número de cuenta que desea buscar:"));
+
+    let cuentaEncontrada = cuentas.find(cuenta => cuenta.numeroCuenta === numero);
+
+    if (cuentaEncontrada) {
+        console.log("Cuenta encontrada:");
+        console.log(cuentaEncontrada);
+    } else {
+        console.log("Cuenta no encontrada.");
+    }
+
+    let monto = Number(prompt("Mostrar cuentas con saldo mayor a:"));
+
+    let cuentasConSaldo = cuentas.filter(cuenta => cuenta.saldo > monto);
+
+    console.log("Cuentas con saldo mayor a $" + monto + ":");
+    console.log(cuentasConSaldo);
+
+    let totalDinero = cuentas.reduce((acumulador, cuenta) => {
+        return acumulador + cuenta.saldo;
+    }, 0);
+
+    console.log("Dinero total del banco: $" + totalDinero);
+
+}
+
 alert("Bienvenido al Cajero Automático");
 
-while (opcion !== "5") {
+// Menú principal del simulador
+while (opcion !== "6") {
 
     opcion = prompt(
         "Seleccione una opción:\n\n" +
@@ -96,7 +137,8 @@ while (opcion !== "5") {
         "2 - Depositar dinero\n" +
         "3 - Retirar dinero\n" +
         "4 - Ver historial\n" +
-        "5 - Salir"
+        "5 - Información del banco\n" +
+        "6 - Salir"
     );
 
     if (opcion === "1") {
@@ -134,6 +176,10 @@ while (opcion !== "5") {
         mostrarHistorial(cuenta1);
 
     } else if (opcion === "5") {
+
+        mostrarInformacionBanco();
+
+    } else if (opcion === "6") {
 
         alert("Gracias por utilizar el cajero.");
 
