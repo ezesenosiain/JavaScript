@@ -1,18 +1,49 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cajero Automático</title>
-    <link rel="stylesheet" href="./css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 
-    <script src="./js/main.js" defer></script>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cajero Automático</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
-  <section class="container">
-     <h1>Bienvenido al Cajero Automático</h1>
-     <p>Página en construcción</p>
-  </section>
+  <main class="contenedor">
+    <h1>Cajero Automático</h1>
+    <section class="saldo">
+      <h2>Saldo actual</h2>
+      <p id="saldo">$0</p>
+    </section>
+    <section class="operaciones">
+      <div class="card">
+        <h3>Depositar dinero</h3>
+        <input type="number" id="inputDepositar" placeholder="Ingrese un monto">
+        <button id="btnDepositar">Depositar</button>
+      </div>
+      <div class="card">
+        <h3>Retirar dinero</h3>
+        <input type="number" id="inputRetirar" placeholder="Ingrese un monto">
+        <button id="btnRetirar">Retirar</button>
+      </div>
+    </section>
+    <section class="busqueda">
+      <h2>Buscar cuenta</h2>
+      <input type="number" id="inputBuscar" placeholder="Número de cuenta">
+      <div id="resultadoBusqueda"></div>
+    </section>
+    <section class="historial">
+      <h2>Historial de movimientos</h2>
+      <div id="listaMovimientos"></div>
+    </section>
+    <section class="estadisticas">
+      <h2>Información del banco</h2>
+      <button id="btnEstadisticas">Mostrar información</button>
+      <div id="informacionBanco"></div>
+    </section>
+    <div id="mensaje"></div>
+  </main>
 </body>
+<script src="js/main.js" defer></script>
+
 </html>

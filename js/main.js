@@ -1,4 +1,3 @@
-// Clase que representa una cuenta bancaria
 class CuentaBancaria {
 
     constructor(titular, numeroCuenta, saldo, movimientos) {
@@ -8,15 +7,15 @@ class CuentaBancaria {
         this.movimientos = movimientos;
     }
 
-    // Método para realizar un depósito
     depositar(monto) {
         this.saldo += monto;
+        this.movimientos.push("Depósito de $" + monto);
     }
 
-    // Método para realizar un retiro si hay saldo suficiente
     retirar(monto) {
         if (monto <= this.saldo) {
             this.saldo -= monto;
+            this.movimientos.push("Retiro de $" + monto);
             return true;
         }
         return false;
@@ -24,7 +23,6 @@ class CuentaBancaria {
 
 }
 
-// Creación de las cuentas bancarias
 const cuenta1 = new CuentaBancaria(
     "Juan",
     1001,
@@ -46,147 +44,147 @@ const cuenta3 = new CuentaBancaria(
     ["Saldo inicial"]
 );
 
-// Array que almacena todas las cuentas del banco
 const cuentas = [cuenta1, cuenta2, cuenta3];
 
-// Variable para controlar el menú principal
-let opcion = "";
+const saldo = document.getElementById("saldo");
+const inputDepositar = document.getElementById("inputDepositar");
+const btnDepositar = document.getElementById("btnDepositar");
+const inputRetirar = document.getElementById("inputRetirar");
+const btnRetirar = document.getElementById("btnRetirar");
+const inputBuscar = document.getElementById("inputBuscar");
+const resultadoBusqueda = document.getElementById("resultadoBusqueda");
+const listaMovimientos = document.getElementById("listaMovimientos");
+const btnEstadisticas = document.getElementById("btnEstadisticas");
+const informacionBanco = document.getElementById("informacionBanco");
+const mensaje = document.getElementById("mensaje");
 
-// Muestra el saldo de una cuenta
-function mostrarSaldo(cuenta) {
-    alert("Su saldo es: $" + cuenta.saldo);
+function actualizarSaldo() {
+    saldo.textContent = "$" + cuenta1.saldo;
 }
 
-// Agrega un movimiento al historial de una cuenta
-const agregarMovimiento = (cuenta, movimiento) => {
-    cuenta.movimientos.push(movimiento);
-};
+function mostrarMensaje(texto) {
+    mensaje.textContent = texto;
+}
 
-// Permite consultar y modificar el historial de movimientos
-function mostrarHistorial(cuenta) {
+function renderizarMovimientos() {
 
-    let buscar = prompt(
-        "Ingrese un movimiento para buscar.\nEjemplo: Consulta de saldo"
-    );
+    listaMovimientos.innerHTML = "";
 
-    if (cuenta.movimientos.includes(buscar)) {
+    cuenta1.movimientos.forEach((movimiento, index) => {
 
-        let posicion = cuenta.movimientos.indexOf(buscar);
+        listaMovimientos.innerHTML += `
+            <div class="movimiento">
+                <span>${movimiento}</span>
+                <button class="btnEliminar" data-index="${index}">
+                    Eliminar
+                </button>
+            </div>
+        `;
 
-        alert("El movimiento existe y está en la posición " + posicion);
+    });
 
-        cuenta.movimientos.splice(posicion, 1, buscar + " (revisado)");
+    const botonesEliminar = document.querySelectorAll(".btnEliminar");
+
+    botonesEliminar.forEach(boton => {
+
+        boton.addEventListener("click", () => {
+
+            const indice = boton.dataset.index;
+
+            cuenta1.movimientos.splice(indice, 1);
+
+            renderizarMovimientos();
+
+            mostrarMensaje("Movimiento eliminado.");
+
+        });
+
+    });
+
+}
+
+btnDepositar.addEventListener("click", () => {
+
+    const monto = Number(inputDepositar.value);
+
+    if (monto > 0) {
+
+        cuenta1.depositar(monto);
+
+        actualizarSaldo();
+
+        renderizarMovimientos();
+
+        mostrarMensaje("Depósito realizado.");
+
+        inputDepositar.value = "";
 
     } else {
 
-        alert("Ese movimiento no existe.");
+        mostrarMensaje("Ingrese un monto válido.");
 
     }
 
-    let eliminado = cuenta.movimientos.pop();
+});
 
-    alert("Se eliminó el último movimiento: " + eliminado);
+btnRetirar.addEventListener("click", () => {
 
-    cuenta.movimientos.unshift("Historial actualizado");
+    const monto = Number(inputRetirar.value);
 
-    console.log("Historial de movimientos:");
+    if (cuenta1.retirar(monto)) {
 
-    for (let movimiento of cuenta.movimientos) {
-        console.log(movimiento);
-    }
+        actualizarSaldo();
 
-}
+        renderizarMovimientos();
 
-// Utiliza funciones de orden superior sobre el array de cuentas
-function mostrarInformacionBanco() {
+        mostrarMensaje("Retiro realizado.");
 
-    let numero = Number(prompt("Ingrese el número de cuenta que desea buscar:"));
-
-    let cuentaEncontrada = cuentas.find(cuenta => cuenta.numeroCuenta === numero);
-
-    if (cuentaEncontrada) {
-        console.log("Cuenta encontrada:");
-        console.log(cuentaEncontrada);
     } else {
-        console.log("Cuenta no encontrada.");
+
+        mostrarMensaje("Saldo insuficiente.");
+
     }
 
-    let monto = Number(prompt("Mostrar cuentas con saldo mayor a:"));
+    inputRetirar.value = "";
 
-    let cuentasConSaldo = cuentas.filter(cuenta => cuenta.saldo > monto);
+});
 
-    console.log("Cuentas con saldo mayor a $" + monto + ":");
-    console.log(cuentasConSaldo);
+inputBuscar.addEventListener("input", () => {
 
-    let totalDinero = cuentas.reduce((acumulador, cuenta) => {
+    const numero = Number(inputBuscar.value);
+
+    const cuenta = cuentas.find(cuenta => cuenta.numeroCuenta === numero);
+
+    if (cuenta) {
+
+        resultadoBusqueda.innerHTML = `
+            <h3>${cuenta.titular}</h3>
+            <p>Cuenta: ${cuenta.numeroCuenta}</p>
+            <p>Saldo: $${cuenta.saldo}</p>
+        `;
+
+    } else {
+
+        resultadoBusqueda.innerHTML = "";
+
+    }
+
+});
+
+btnEstadisticas.addEventListener("click", () => {
+
+    const cuentasConSaldo = cuentas.filter(cuenta => cuenta.saldo > 1000);
+
+    const totalDinero = cuentas.reduce((acumulador, cuenta) => {
         return acumulador + cuenta.saldo;
     }, 0);
 
-    console.log("Dinero total del banco: $" + totalDinero);
+    informacionBanco.innerHTML = `
+        <p>Cuentas con saldo mayor a $1000: ${cuentasConSaldo.length}</p>
+        <p>Dinero total del banco: $${totalDinero}</p>
+    `;
 
-}
+});
 
-alert("Bienvenido al Cajero Automático");
-
-// Menú principal del simulador
-while (opcion !== "6") {
-
-    opcion = prompt(
-        "Seleccione una opción:\n\n" +
-        "1 - Consultar saldo\n" +
-        "2 - Depositar dinero\n" +
-        "3 - Retirar dinero\n" +
-        "4 - Ver historial\n" +
-        "5 - Información del banco\n" +
-        "6 - Salir"
-    );
-
-    if (opcion === "1") {
-
-        mostrarSaldo(cuenta1);
-        agregarMovimiento(cuenta1, "Consulta de saldo");
-
-    } else if (opcion === "2") {
-
-        let deposito = Number(prompt("Ingrese el monto a depositar"));
-
-        cuenta1.depositar(deposito);
-        agregarMovimiento(cuenta1, "Depósito de $" + deposito);
-
-        alert("Depósito realizado.");
-
-    } else if (opcion === "3") {
-
-        let retiro = Number(prompt("Ingrese el monto a retirar"));
-
-        if (cuenta1.retirar(retiro)) {
-
-            agregarMovimiento(cuenta1, "Retiro de $" + retiro);
-
-            alert("Retiro realizado.");
-
-        } else {
-
-            alert("Saldo insuficiente.");
-
-        }
-
-    } else if (opcion === "4") {
-
-        mostrarHistorial(cuenta1);
-
-    } else if (opcion === "5") {
-
-        mostrarInformacionBanco();
-
-    } else if (opcion === "6") {
-
-        alert("Gracias por utilizar el cajero.");
-
-    } else {
-
-        alert("Opción inválida.");
-
-    }
-
-}
+actualizarSaldo();
+renderizarMovimientos();
