@@ -20,15 +20,23 @@ class CuentaBancaria {
         }
         return false;
     }
-
 }
 
-const cuenta1 = new CuentaBancaria(
-    "Juan",
-    1001,
-    1000,
-    ["Saldo inicial"]
-);
+const cuentaGuardada = JSON.parse(localStorage.getItem("cuenta1")) ?? null;
+
+const cuenta1 = cuentaGuardada
+    ? new CuentaBancaria(
+        cuentaGuardada.titular,
+        cuentaGuardada.numeroCuenta,
+        cuentaGuardada.saldo,
+        cuentaGuardada.movimientos
+    )
+    : new CuentaBancaria(
+        "Juan",
+        1001,
+        1000,
+        ["Saldo inicial"]
+    );
 
 const cuenta2 = new CuentaBancaria(
     "María",
@@ -57,6 +65,10 @@ const listaMovimientos = document.getElementById("listaMovimientos");
 const btnEstadisticas = document.getElementById("btnEstadisticas");
 const informacionBanco = document.getElementById("informacionBanco");
 const mensaje = document.getElementById("mensaje");
+
+function guardarCuenta() {
+    localStorage.setItem("cuenta1", JSON.stringify(cuenta1));
+}
 
 function actualizarSaldo() {
     saldo.textContent = "$" + cuenta1.saldo;
@@ -93,6 +105,7 @@ function renderizarMovimientos() {
 
             cuenta1.movimientos.splice(indice, 1);
 
+            guardarCuenta();
             renderizarMovimientos();
 
             mostrarMensaje("Movimiento eliminado.");
@@ -111,8 +124,8 @@ btnDepositar.addEventListener("click", () => {
 
         cuenta1.depositar(monto);
 
+        guardarCuenta();
         actualizarSaldo();
-
         renderizarMovimientos();
 
         mostrarMensaje("Depósito realizado.");
@@ -133,8 +146,8 @@ btnRetirar.addEventListener("click", () => {
 
     if (cuenta1.retirar(monto)) {
 
+        guardarCuenta();
         actualizarSaldo();
-
         renderizarMovimientos();
 
         mostrarMensaje("Retiro realizado.");
@@ -157,10 +170,15 @@ inputBuscar.addEventListener("input", () => {
 
     if (cuenta) {
 
+        const { titular, numeroCuenta, saldo } = cuenta;
+
+        const estadoSaldo = saldo > 0 ? "Saldo disponible" : "Sin saldo";
+
         resultadoBusqueda.innerHTML = `
-            <h3>${cuenta.titular}</h3>
-            <p>Cuenta: ${cuenta.numeroCuenta}</p>
-            <p>Saldo: $${cuenta.saldo}</p>
+            <h3>${titular}</h3>
+            <p>Cuenta: ${numeroCuenta}</p>
+            <p>Saldo: $${saldo}</p>
+            <p>${estadoSaldo}</p>
         `;
 
     } else {
