@@ -7,11 +7,13 @@ class CuentaBancaria {
         this.movimientos = movimientos;
     }
 
+    // Función para depositar dinero y agregar el movimiento al historial
     depositar(monto) {
         this.saldo += monto;
         this.movimientos.push("Depósito de $" + monto);
     }
 
+    // Función para retirar dinero si hay saldo suficiente
     retirar(monto) {
         if (monto <= this.saldo) {
             this.saldo -= monto;
@@ -22,6 +24,7 @@ class CuentaBancaria {
     }
 }
 
+// Recupero la cuenta guardada en localStorage o creo una nueva si no existe
 const cuentaGuardada = JSON.parse(localStorage.getItem("cuenta1")) ?? null;
 
 const cuenta1 = cuentaGuardada
@@ -54,6 +57,7 @@ const cuenta3 = new CuentaBancaria(
 
 const cuentas = [cuenta1, cuenta2, cuenta3];
 
+// Selecciono los elementos del HTML que voy a utilizar
 const saldo = document.getElementById("saldo");
 const inputDepositar = document.getElementById("inputDepositar");
 const btnDepositar = document.getElementById("btnDepositar");
@@ -66,18 +70,42 @@ const btnEstadisticas = document.getElementById("btnEstadisticas");
 const informacionBanco = document.getElementById("informacionBanco");
 const mensaje = document.getElementById("mensaje");
 
+// Función para guardar los datos actualizados de la cuenta en localStorage
 function guardarCuenta() {
-    localStorage.setItem("cuenta1", JSON.stringify(cuenta1));
+
+    try {
+
+        mensaje.textContent = "Guardando información...";
+
+        const cuentaEnTexto = JSON.stringify(cuenta1);
+
+        localStorage.setItem("cuenta1", cuentaEnTexto);
+
+    } catch (error) {
+
+        mensaje.textContent = "No se pudo guardar la información.";
+
+    } finally {
+
+        setTimeout(() => {
+            mensaje.textContent = "";
+        }, 2000);
+
+    }
+
 }
 
+// Función para mostrar el saldo actualizado en pantalla
 function actualizarSaldo() {
     saldo.textContent = "$" + cuenta1.saldo;
 }
 
+// Función para mostrar mensajes al usuario
 function mostrarMensaje(texto) {
     mensaje.textContent = texto;
 }
 
+// Función para mostrar todos los movimientos de la cuenta
 function renderizarMovimientos() {
 
     listaMovimientos.innerHTML = "";
@@ -116,6 +144,7 @@ function renderizarMovimientos() {
 
 }
 
+// Evento para realizar un depósito
 btnDepositar.addEventListener("click", () => {
 
     const monto = Number(inputDepositar.value);
@@ -140,6 +169,7 @@ btnDepositar.addEventListener("click", () => {
 
 });
 
+// Evento para realizar un retiro
 btnRetirar.addEventListener("click", () => {
 
     const monto = Number(inputRetirar.value);
@@ -162,6 +192,7 @@ btnRetirar.addEventListener("click", () => {
 
 });
 
+// Evento que busca una cuenta mientras se escribe su número
 inputBuscar.addEventListener("input", () => {
 
     const numero = Number(inputBuscar.value);
@@ -189,6 +220,7 @@ inputBuscar.addEventListener("input", () => {
 
 });
 
+// Evento que muestra información general de las cuentas
 btnEstadisticas.addEventListener("click", () => {
 
     const cuentasConSaldo = cuentas.filter(cuenta => cuenta.saldo > 1000);
@@ -204,5 +236,17 @@ btnEstadisticas.addEventListener("click", () => {
 
 });
 
+// Mensaje que aparece unos segundos después de ingresar al simulador
+setTimeout(() => {
+
+    mostrarMensaje("Recordatorio: revisá tu saldo antes de realizar una operación.");
+
+    setTimeout(() => {
+        mensaje.textContent = "";
+    }, 4000);
+
+}, 3000);
+
+// Muestro los datos iniciales al cargar la página
 actualizarSaldo();
 renderizarMovimientos();
