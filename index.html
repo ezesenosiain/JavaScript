@@ -2,48 +2,82 @@
 <html lang="es">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cajero Automático</title>
-  <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Mi Tienda</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="js/productos.js" defer></script>
+    <script src="js/carrito.js" defer></script>
+    <script src="js/main.js" defer></script>
 </head>
 
 <body>
-  <main class="contenedor">
-    <h1>Cajero Automático</h1>
-    <section class="saldo">
-      <h2>Saldo actual</h2>
-      <p id="saldo">$0</p>
-    </section>
-    <section class="operaciones">
-      <div class="card">
-        <h3>Depositar dinero</h3>
-        <input type="number" id="inputDepositar" placeholder="Ingrese un monto">
-        <button id="btnDepositar">Depositar</button>
-      </div>
-      <div class="card">
-        <h3>Retirar dinero</h3>
-        <input type="number" id="inputRetirar" placeholder="Ingrese un monto">
-        <button id="btnRetirar">Retirar</button>
-      </div>
-    </section>
-    <section class="busqueda">
-      <h2>Buscar cuenta</h2>
-      <input type="number" id="inputBuscar" placeholder="Número de cuenta">
-      <div id="resultadoBusqueda"></div>
-    </section>
-    <section class="historial">
-      <h2>Historial de movimientos</h2>
-      <div id="listaMovimientos"></div>
-    </section>
-    <section class="estadisticas">
-      <h2>Información del banco</h2>
-      <button id="btnEstadisticas">Mostrar información</button>
-      <div id="informacionBanco"></div>
-    </section>
-    <div id="mensaje"></div>
-  </main>
+
+    <header class="header">
+        <h1>Mi Tienda</h1>
+
+        <button id="btnCarrito">
+            Carrito
+            <span id="contadorCarrito">0</span>
+        </button>
+    </header>
+
+    <main class="contenedor">
+
+        <section class="filtros">
+
+            <input
+                type="text"
+                id="inputBusqueda"
+                placeholder="Buscar productos..."
+            >
+
+            <select id="filtroCategoria">
+                <option value="todos">Todas las categorías</option>
+            </select>
+
+        </section>
+
+        <section>
+
+            <h2>Productos</h2>
+
+            <div id="contenedorProductos"></div>
+
+            <p id="mensajeProductos"></p>
+
+        </section>
+
+        <section class="carrito" id="seccionCarrito">
+
+            <h2>Carrito</h2>
+
+            <div id="contenedorCarrito"></div>
+
+            <div class="total">
+                <p>Total: <strong id="totalCarrito">$0</strong></p>
+
+                <button id="btnVaciarCarrito">
+                    Vaciar carrito
+                </button>
+
+                <button id="btnFinalizarCompra">
+                    Finalizar compra
+                </button>
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer>
+        <p>Mi Tienda - Proyecto Final JavaScript</p>
+    </footer>
+
 </body>
-<script src="js/main.js" defer></script>
 
 </html>

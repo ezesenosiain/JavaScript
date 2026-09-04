@@ -1,0 +1,66 @@
+[
+    {
+        "id": 1,
+        "nombre": "Notebook",
+        "precio": 850000,
+        "categoria": "Computación",
+        "stock": 5,
+        "imagen": "assets/img/notebook.jpg"
+    },
+    {
+        "id": 2,
+        "nombre": "Monitor",
+        "precio": 320000,
+        "categoria": "Computación",
+        "stock": 8,
+        "imagen": "assets/img/monitor.jpg"
+    },
+    {
+        "id": 3,
+        "nombre": "Teclado mecánico",
+        "precio": 85000,
+        "categoria": "Periféricos",
+        "stock": 12,
+        "imagen": "assets/img/teclado.jpg"
+    },
+    {
+        "id": 4,
+        "nombre": "Mouse inalámbrico",
+        "precio": 45000,
+        "categoria": "Periféricos",
+        "stock": 15,
+        "imagen": "assets/img/mouse.jpg"
+    },
+    {
+        "id": 5,
+        "nombre": "Auriculares",
+        "precio": 75000,
+        "categoria": "Audio",
+        "stock": 10,
+        "imagen": "assets/img/auriculares.jpg"
+    },
+    {
+        "id": 6,
+        "nombre": "Webcam",
+        "precio": 60000,
+        "categoria": "Accesorios",
+        "stock": 7,
+        "imagen": "assets/img/webcam.jpg"
+    },
+    {
+        "id": 7,
+        "nombre": "Parlantes",
+        "precio": 55000,
+        "categoria": "Audio",
+        "stock": 6,
+        "imagen": "assets/img/parlantes.jpg"
+    },
+    {
+        "id": 8,
+        "nombre": "Pad mouse",
+        "precio": 25000,
+        "categoria": "Accesorios",
+        "stock": 20,
+        "imagen": "assets/img/pad-mouse.jpg"
+    }
+]
